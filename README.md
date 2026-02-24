@@ -13,7 +13,7 @@ SourceBridge is a python application that acts as a communication layer between 
 
 # Prerequisites:
 - Installed TekVISA
-	- Able to communicate with SourceXpress via the GPIB8::1::INSTR connection
+	- Able to communicate with SourceXpress via the GPIB8::1::INSTR connection  
 	![SourceXpress connection suscuessful checked through OpenChoiceUtility](/Images/SourceXpressGPIB.png)
 
 # Operating SourceBridge:
