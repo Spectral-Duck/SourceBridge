@@ -68,10 +68,6 @@ Supports all communication methods, LAN, USB, and GPIB
 - Basic Mode Controls? - Beyond Scope
 	- SourceXpress' AFG mode is too different from the AFG's basic mode to cleanly integrate this way. To get the most out of the AFG31K's basic mode would require a dedicated application.
 		- Use Kickstart/ArbExpress for basic controls.
-- Automatic Synchronization of AFG31k? - Beyond Scope
-	- Have not personally tested if possible through the Advanced mode.
-	- My suspicion is yes*, but would require a way of distributing a trigger to all generators, plus a scope to perform alignment.  
-		- Plus there is odd behavior on the AFG31k's Advanced mode when triggered.
 - Per Channel Sample Rate - Unsupported
 
 
