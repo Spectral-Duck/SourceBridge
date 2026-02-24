@@ -33,20 +33,21 @@ Supports all communication methods, LAN, USB, and GPIB
 	- Use the 2.5GS/s option, and disable AC output as AC Coupled isn't available on AFG.
 	- Using the DCHV output paths allows for the AWG to better replicate the AFG's max amplitudes.
 - Recommended config:  
-	![Recommended configuration for a virtual generator](/Images/AFG_Config.png)
-> **Important** The generator name is what SourceBridge uses to know what VISA ID you want to communicate with.  The only thing that matters is that the VISA ID or an IP address is the last item in the string.  You may also define a generator without a name by only putting the VISA ID in the Name Field.
->- Valid Examples:
+	![Recommended configuration for a virtual generator](/Images/AFG_Config.png)  
+> [!IMPORTANT]
+> The generator name is what SourceBridge uses to know what VISA ID you want to communicate with.  The only thing that matters is that the VISA ID or an IP address is the last item in the string.  You may also define a generator without a name by only putting the VISA ID in the Name Field.
+> - Valid Examples:
 >	- TSC's AFG Please don't Break 169.254.3.26
 >	- AFG31k-USB USB0::0x0699::0x035E::B010001::INSTR
 >	- 10.1.23.4
->- Invalid Examples:
+> - Invalid Examples:
 >	- MyAFG10.233.1.1
 >		- Missing space between IP and name
 >	- 10.233.1.2 MyFancyAFG
 >		- VISA ID is not last item in string.  
-- Any names that are not recognized will be ignored.
-	- Means you can control an AFG31k simultaneously with your AWG5200/70k.
-	- If you mistype the generator name, **don't rename it** delete the generator and make a new one.  (Due to bug with the PI when renaming generators)<div style="page-break-after: always;"></div>
+> - Any names that are not recognized will be ignored.
+>	- Means you can control an AFG31k simultaneously with your AWG5200/70k.
+>	- If you mistype the generator name, **don't rename it** delete the generator and make a new one.  (Due to bug with the PI when renaming generators)<div style="page-break-after: always;"></div>
 
 # Unsupported or Beyond scope:
 - Do not use SourceXpress programmatically while using SourceBridge. - Unsupported
@@ -57,7 +58,7 @@ Supports all communication methods, LAN, USB, and GPIB
 - Per Channel Sequences - Unsupported
 	- Use Multi Tracked Sequences
 - At runtime digital IQ modulator - Unsupported
-	- IQ wfms can be converted to real with SourceXpress Capture/Playback tool
+	- IQ wfms can be converted to real with SourceXpress Capture/Playback tool 
 	- I and Q wfms can individually be assigned to channels though
 	- I and Q tracks of a sequence also can be assigned to channels
 	- Use an external IQ Mixer to upconvert for >250MHz.  TSG4106A works well. 
@@ -72,3 +73,7 @@ Supports all communication methods, LAN, USB, and GPIB
 	- My suspicion is yes*, but would require a way of distributing a trigger to all generators, plus a scope to perform alignment.  
 		- Plus there is odd behavior on the AFG31k's Advanced mode when triggered.
 - Per Channel Sample Rate - Unsupported
+
+
+> That is way slicker than it should be  
+~ Coworker
