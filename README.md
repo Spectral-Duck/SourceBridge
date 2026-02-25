@@ -69,7 +69,7 @@ Supports all communication methods, LAN, USB, and GPIB
 	- SourceXpress' AFG mode is too different from the AFG's basic mode to cleanly integrate this way. To get the most out of the AFG31K's basic mode would require a dedicated application.
 		- Use Kickstart/ArbExpress for basic controls.
 - Per Channel Sample Rate - Unsupported
-
+- Auto Sync of multiple AFG31ks - Unsupported and Beyond Scope
 
 > That is way slicker than it should be  
 ~ Coworker
