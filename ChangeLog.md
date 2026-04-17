@@ -1,4 +1,28 @@
+## SourceBridge_1.5
+**Bug Fixes:**
+- Sequence Go To END argument now works, previously returned error failing to load sequence.
 
+**New Features:**
+- None
+
+**Changed Features:**
+- Using the B-Trigger on Sequences or Standard playback now uses Manual-Trigger instead of defaulting to A-Trigger.
+#### Known Issues:
+- When using TekVISA 4.X and a USB connection from SourceBridge to an AFG, SourceBridge will crash due to TekVISA being unable to set a read termination.  
+	- Workaround: Use LAN connection, or use the conflict manager to use another VISA for USB connections.  NI-VISA works well here.  
+
+- Due to the way that SourceBridge improves load speed through storing the hash of a wfm in its file name.  There is a vanishingly small chance in a extremely specific sequence of events in which the wfm output might not be updated and will use an older wfm version.
+	1. Transmit a setup to a connected AFG.
+	2. Stop output of AFG.
+	3. Modify a waveform in such a way that the hash of the wfm data is unchanged.
+		1. Without changing its name or wfm type (Real/I/Q)
+	4. Retransmit to the connected AFG.
+		Under this sequence of events, SourceBridge will find the wfm to have 'not changed' as the name, type, and hash all match.  Thus will not send the updated wfm, causing the AFG to play an older version of a waveform
+	5. This will reveal itself as one of two errors:
+		1. If you are using two channels, and the record length of the wfm has changed.  The AFG will throw an error that wfms are inequal length halting SourceBridge.
+		2. If you are using one channel, or if the record length has not changed.  The generator will play the older waveform instead of the desired one.  SourceBridge has no way of knowing a hash collision occurred.
+	- Workaround: Buy a lottery ticket and restart SoureBridge.
+ 
 ## SourceBridge 1.4 
 **Bug Fixes:**
 - Fixed crash if connected AFG31k is running <1.6.5
