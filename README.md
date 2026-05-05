@@ -21,7 +21,8 @@ SourceBridge is a python application that acts as a communication layer between 
 - Unzip to a desired location
 - Ensure that GPIB8::1::INSTR is valid. 
 	- I use **OpenChoice Instrument Manager** for this.
-- Run **Run_SourceBridge.bat**
+- If Using SourceBridge >=1.5 Run SourceBridge.exe 
+- If using SourceBridge <=1.4 Run **Run_SourceBridge.bat**
 - Connect a new generator (guide below)
 - Drive the AFG31k a if its an AWG! (with limsits, see end of doc)
 
@@ -73,3 +74,6 @@ Supports all communication methods, LAN, USB, and GPIB
 
 > That is way slicker than it should be  
 ~ Coworker
+
+> [SourceBridge] has earned a spot on my desktop  
+~ [W2AEW](https://www.youtube.com/channel/UCiqd3GLTluk2s_IBt7p_LjA)
