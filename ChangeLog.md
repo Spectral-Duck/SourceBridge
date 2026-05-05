@@ -3,11 +3,19 @@
 - Sequence Go To END argument now works, previously returned error failing to load sequence.
 
 **New Features:**
-- None
+- Marker support when using only a single channel.
+	- If you have waveform data loaded in only one channel, and enable that channels marker 1.  SourceBridge will now take the marker data from ChannelX Marker1 and put it into the unused channel on the AFG31k.
+    - Intended for use with the RADAR plugin as it includes a sync pulse in Marker 1 slot of a compiled pulse train.
+    - Can be used to contain Clock and Data within a single waveform for emulating a low speed bus like I2C.
 
 **Changed Features:**
 - Using the B-Trigger on Sequences or Standard playback now uses Manual-Trigger instead of defaulting to A-Trigger.
 #### Known Issues:
+- When using NI-VISA and an IP connection to an AFG.  NI-VISA may be unable to connect to a generator if one of the ip fields contains two characters with a leading 0.
+    - Example: 192.168.01.1 - Third field 01 contains two characters and leads with a zero, NI-VISA may be unable to connect to a generator in this case.
+    - Workaround: Either do not use leading 0's in defining a connection, or ensure the IP has three characters in each field.
+         - 192.168.001.1 and 192.168.1.1 will both work.
+     
 - When using TekVISA 4.X and a USB connection from SourceBridge to an AFG, SourceBridge will crash due to TekVISA being unable to set a read termination.  
 	- Workaround: Use LAN connection, or use the conflict manager to use another VISA for USB connections.  NI-VISA works well here.  
 
