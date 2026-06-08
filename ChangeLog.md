@@ -1,3 +1,7 @@
+## SourceBridge_1.6.2
+**Bug Fixes:**
+- Closing SourceBridge no longer wipes the AFG's state.
+
 ## SourceBridge_1.6.1
 **Bug Fixes:**
 - Status message cleared on all AFG's when SB closes.  
