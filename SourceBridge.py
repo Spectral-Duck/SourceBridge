@@ -1,17 +1,13 @@
-"""
-Hi, this is SourceBridge a utility program written by Daniel Schneider
-It sort of adds support for the AFG31k to SourceXpress.
-"""
-
 import pyvisa
 import re # regular expressions
 import time
 import struct # for binary handeling
 import os
 import numpy as np
-import random # egg
+import random
 import inspect
 import datetime 
+import atexit
      
 #https://download.tek.com/manual/AWG5200-Programmer-Manual-077133700-RevA.pdf                   - AWG Programmers
 #https://download.tek.com/manual/SourceXpress-Printable-Help-Document-077114505.pdf             - AWG Help - Page 119 WFMX format 
@@ -216,6 +212,16 @@ def ErrorChecking(AWG,AFG):
             log.error(f'Sequence loading failed.  SubSequencing not supported by AFG31k')
             # TODO: Build logic for checking if a sequence can be unpacked/flattend here.  
             # Untill that happens, this is a non supported opperating mode. 
+
+            """
+            So... The time has come to tackle subsequencing.
+            This will have to be a recursive process
+                First attempt to do sequencing unpacking
+                    If subseq repeat count == 1 and if Event Input == Off and Seq len + subseq len <=255
+                        Then this sequence can be unpacked.
+                        Add subsequence length ot SubSeqLen
+                        
+            """
             Load_Failure = True
         
         else: # Assuming subsequencing was not found now we can go through 
@@ -262,17 +268,9 @@ def ErrorChecking(AWG,AFG):
                         format = 'Marker'
                     reply.append([temp,format])
                     
-                #print(f'Reply: {reply}')
-
-                # print(f'Reply {i}: {reply}')
-
-                ## attach I and Q suffixes to the used wfm, so that we know what to grab later.  
-                #if len(Ch2.casset) == 3: 
-                #    reply[-1] = [reply[-1],Ch2.casset[2]]
-                #    if len(Ch1.casset) == 3: reply[-2] = [reply[-2],Ch1.casset[2]]
-                #elif len(Ch1.casset) == 3:  reply[-1] = [reply[-1],Ch1.casset[2]]
 
                 Sequence_Data.append(reply)
+
             # While not supported by the AFG's firmware, adding an End Jump was easy enough.  
             # Just jump to the end... not sure why I didn't add this previously but meh.
             # Removing error flag.
@@ -449,7 +447,7 @@ def get_SE_wfm_saved(instrument, wfm_name, wfm_type = None):
     if not is_binary:
         for i in range(length):
             data.append(float(struct.unpack("f",file.read(4))[0]))
-    #print(len(data))
+    
     else:
         for i in range(length):
             # grabs the data from the M1 index as either -1 for 0 and 1 for 1
@@ -554,12 +552,6 @@ def afg_innitalization(instrument):
     #instrument.query('*OPC?')
     #instrument.write('SOURce2:Function:Shape DC')
     long_OPC(instrument)
-    # Why is this burst mode stuff here you ask?  Good question...
-    # There is a bug with the advanced mode that falls back to basic mode if the output is disabled.
-    # I have already hidden the effects on Ch1/2 via opening the output relays, however no such option exists for the Trig Out.
-    # Instead the basic mode has to be set to a triggered opperating mode, and set to an external trigger so the trig out doesnt constantly send pulses out.
-    # Somewhere else in here you can find the explination to the three main bugs with the advanced mode on the AFG31k.  
-    # Yea... this is fine.  :)
     instrument.write('Source1:Burst:State ON; :Source2:Burst:State ON; :Trigger:Source EXT')
     AFG_Clean_Up(instrument)
     instrument.write('SEQControl:STATe 1') # ensure the AFG31k is using the advanced mode.  
@@ -969,6 +961,18 @@ def AFG_Stop_Output(AFG):
     # AFG_Clean_Up(AFG) Removing to support hashing wfms improving load speed
     ESR(AFG)
 
+def end_program(AFG_Dict):
+    print('Terminating')
+    keys = list(AFG_Dict.keys())
+    log.debug(keys)
+    for i in range(len(keys)):
+        if not AFG_Dict[keys[i]].Error:
+            try: 
+                AFG_Dict[keys[i]].inst.write('Display:Window:Text:clear')
+                AFG_Dict[keys[i]].inst.write('*RST')
+            except:
+                log.debug(f'Generator: {AFG_Dict[keys[i].inst.ID]} lost before disconnect.')
+
 class AFG_Data:
     # This may be a weird approach, BUT it makes things really easy to program.  
     #  A dictionary of classes containing the VISA connections and supporting info.
@@ -1107,8 +1111,8 @@ class logging():
 
 if __name__ == '__main__':
     log = logging()
-    
-    log.info('Starting SourceBridge V1.5! Making connection to SourceXpress')
+    log.info('Starting SourceBridge V1.6.1! Making connection to SourceXpress')
+    #print('This software was written by Daniel Schneider: daniel.schneider@tektronix.com')
     rm = pyvisa.ResourceManager()
     se = rm.open_resource('GPIB8::1::INSTR')
     se.read_termination = '\n'
@@ -1118,6 +1122,8 @@ if __name__ == '__main__':
     log.info('SourceXpress connected, monitoring status.')
 
     AFG_Dict = {} # stores all known Virtual Generators
+
+    atexit.register(end_program, AFG_Dict)
 
     while True:
         # wait for the output enable command.
