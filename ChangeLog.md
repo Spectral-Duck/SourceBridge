@@ -2,6 +2,13 @@
 **Bug Fixes:**
 - Status message cleared on all AFG's when SB closes.  
 
+**New Features:**
+- Added support for marker channel.
+	- If only one channel is used, and that channel has Marker 1 enabled.  The other channel on the afg will be used for playing out the marker data.  
+- Enabled a sync pulse out of the Trig Out from an AFG31k when playing the first sequencer index.  
+- Errors and Warnings in terminal are now color coded.
+- Log File stored in C:\Temp\SourceBridge\log.txt contains history of terminal output.
+
 ## SourceBridge_1.5
 **Bug Fixes:**
 - Sequence Go To END argument now works, previously returned error failing to load sequence.
