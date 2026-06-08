@@ -1,3 +1,7 @@
+## SourceBridge_1.6.1
+**Bug Fixes:**
+- Status message cleared on all AFG's when SB closes.  
+
 ## SourceBridge_1.5
 **Bug Fixes:**
 - Sequence Go To END argument now works, previously returned error failing to load sequence.
