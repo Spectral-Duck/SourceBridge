@@ -968,8 +968,9 @@ def end_program(AFG_Dict):
     for i in range(len(keys)):
         if not AFG_Dict[keys[i]].Error:
             try: 
+                AFG_Dict[keys[i]].inst.write('Source1:Burst:State Off;:Source2:Burst:State Off')
                 AFG_Dict[keys[i]].inst.write('Display:Window:Text:clear')
-                AFG_Dict[keys[i]].inst.write('*RST')
+                #AFG_Dict[keys[i]].inst.write('*RST')
             except:
                 log.debug(f'Generator: {AFG_Dict[keys[i].inst.ID]} lost before disconnect.')
 
@@ -1111,7 +1112,7 @@ class logging():
 
 if __name__ == '__main__':
     log = logging()
-    log.info('Starting SourceBridge V1.6.1! Making connection to SourceXpress')
+    log.info('Starting SourceBridge V1.6.2! Making connection to SourceXpress')
     #print('This software was written by Daniel Schneider: daniel.schneider@tektronix.com')
     rm = pyvisa.ResourceManager()
     se = rm.open_resource('GPIB8::1::INSTR')
