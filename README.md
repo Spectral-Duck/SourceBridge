@@ -1,3 +1,7 @@
+>[!WARNING]
+> This repository is no longer under active development, as I no longer have access to an AFG31k.  
+> V1.6.2 works well as of posting.  Though things may break, and I might not be able to fix them.  
+
 # What is SourceBridge?
 SourceBridge is a python application that acts as a communication layer between Tektronix's SourceXpress and the AFG31k Series.  By using a virtual AWG5200, monitoring its state, then copying its configuration over to a connected AFG31k.  This addresses several pains of using the AFG31k's advanced mode such as:
 - Difficulty of manually loading wfms and building sequence table through touch screen.
